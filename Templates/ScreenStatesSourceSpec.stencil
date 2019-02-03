@@ -1,0 +1,73 @@
+// sourcery:file:{{ argument.unitTestDir }}/{{ argument.screenName }}/{{ argument.moduleName }}{{ argument.screenName }}StatesSourceSpec.swift
+import Nimble
+import Quick
+import RxSwift
+import RxTest
+import Cuckoo
+import TestUtils
+@testable import {{ argument.targetName }}
+
+final class {{ argument.moduleName }}{{ argument.screenName }}StatesSourceSpec: QuickSpec {
+
+    // swiftlint:disable:next function_body_length
+    override func spec() {
+        super.spec()
+
+        describe("{{ argument.moduleName }}{{ argument.screenName }}StatesSource") {
+            var statesSource: {{ argument.moduleName }}{{ argument.screenName }}StatesSource!
+            var eventsSourceMock: Mock{{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol!
+            // TODO: ... 🔥🔥🔥
+            var scheduler: TestScheduler!
+            var disposeBag: DisposeBag!
+            beforeEach {
+                scheduler = TestScheduler(initialClock: 0)
+                disposeBag = DisposeBag()
+
+                eventsSourceMock = Mock{{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol()
+                // TODO: ... 🔥🔥🔥
+                statesSource = {{ argument.moduleName }}{{ argument.screenName }}StatesSource(
+                    eventsSource: eventsSourceMock
+                    // TODO: ... 🔥🔥🔥
+                )
+            }
+
+            describe("states stream from view") {
+                var viewMock: Mock{{ argument.moduleName }}{{ argument.screenName }}ViewProtocol!
+                var observer: TestableObserver<{{ argument.moduleName }}{{ argument.screenName }}.State>!
+                beforeEach {
+                    viewMock = Mock{{ argument.moduleName }}{{ argument.screenName }}ViewProtocol()
+                    observer = scheduler.createObserver({{ argument.moduleName }}{{ argument.screenName }}.State.self)
+                }
+
+                context("events source fails") {
+                    beforeEach {
+                        stub(eventsSourceMock) { stub in
+                            when(stub.eventsFrom(view: any())).thenReturn(.error(FakeError.fake))
+                        }
+
+                        statesSource.statesFrom(view: viewMock)
+                            .subscribe(observer)
+                            .disposed(by: disposeBag)
+                    }
+                    it("must fail as 1st event") {
+                        observer.events.extracting(at: 0) {
+                            expect($0.value).to(beErrorEvent())
+                        }
+                    }
+                }
+
+                context("events source emits .refresh") {
+                    beforeEach {
+                        stub(eventsSourceMock) { stub in
+                            when(stub.eventsFrom(view: any())).thenReturn(.just(.refresh))
+                        }
+                    }
+                    it("must be implemented!!!") { fail() }
+                }
+
+                // TODO: test other events... 🔥🔥🔥
+            }
+        }
+    }
+}
+// sourcery:end

@@ -1,0 +1,65 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/{{ argument.moduleName }}{{ argument.screenName }}ViewController.swift
+import UIKit
+import RxSwift
+import RxSwiftExt
+import RxCocoa
+import SnapKit
+
+final class {{ argument.moduleName }}{{ argument.screenName }}ViewController: UIViewController {
+
+    private let viewModel: {{ argument.moduleName }}{{ argument.screenName }}ViewModelProtocol
+
+    init(viewModel: {{ argument.moduleName }}{{ argument.screenName }}ViewModelProtocol) {
+        self.viewModel = viewModel
+
+        super.init()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        configureViewHierarchy()
+        configureLayout()
+        configureViews()
+        configureBindings()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        configureNavigationBar()
+    }
+
+    private func configureViewHierarchy() {
+        // TODO: view.addSubviews(...) 🔥🔥🔥
+    }
+
+    private func configureLayout() {
+        // TODO: implement!!! 🔥🔥🔥
+    }
+
+    private func configureViews() {
+        view.backgroundColor = .white // TODO: implement!!! 🔥🔥🔥
+    }
+
+    private func configureNavigationBar() {
+        navigationController?.navigationBar.tintColor = .white // TODO: fix!!! 🔥🔥🔥
+        navigationItem.leftBarButtonItem?.tintColor = .black // TODO: fix!!! 🔥🔥🔥
+    }
+
+    private func configureBindings() {
+        // TODO: implement!!! 🔥🔥🔥
+
+        viewModel.onAllDriversBoundTo(view: self)
+    }
+}
+
+extension {{ argument.moduleName }}{{ argument.screenName }}ViewController: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol {
+
+    var viewWillAppear: Observable<Bool> {
+        return rx.viewWillAppear
+    }
+
+    // TODO: ... 🔥🔥🔥
+}
+// sourcery:end

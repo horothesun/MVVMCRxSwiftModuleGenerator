@@ -1,0 +1,52 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.moduleName }}Coordinator.swift
+import Swinject
+import SwinjectAutoregistration
+import UIKit
+
+final class {{ argument.moduleName }}Coordinator {
+
+    private lazy var screenCoordinatorProxy: {{ argument.moduleName }}{{ argument.screenName }}CoordinatorProtocol = resolver~>
+    private lazy var screenViewController: {{ argument.moduleName }}{{ argument.screenName }}ViewController = resolver~>
+
+    // TODO: coordinator proxies and view-controllers... 🔥🔥🔥
+
+    private var completionHandler: (() -> Void)?
+
+    private let resolver: Resolver
+    private weak var navigationController: UINavigationController?
+
+    init(
+        resolver: Resolver,
+        navigationController: UINavigationController) {
+
+        self.resolver = resolver
+        self.navigationController = navigationController
+
+        (screenCoordinatorProxy as! {{ argument.moduleName }}{{ argument.screenName }}CoordinatorProxy).wrapee = self
+        // TODO: coordinator proxy wrapees... 🔥🔥🔥
+    }
+}
+
+extension {{ argument.moduleName }}Coordinator: {{ argument.moduleName }}CoordinatorProtocol {
+
+    func start(completionHandler: @escaping () -> Void) {
+        self.completionHandler = completionHandler
+        show{{ argument.screenName }}Screen()
+    }
+    
+    private func show{{ argument.screenName }}Screen() {
+        guard let navigationController = navigationController else {
+            fatalError("UI not loaded properly")
+        }
+
+        navigationController.setViewControllers([screenViewController], animated: true)
+    }
+}
+
+extension {{ argument.moduleName }}Coordinator: {{ argument.moduleName }}{{ argument.screenName }}CoordinatorProtocol {
+
+    func proceedFrom{{ argument.screenName }}() {
+        print("\(#function)") // TODO: implement!!! 🔥🔥🔥
+    }
+}
+// sourcery:end

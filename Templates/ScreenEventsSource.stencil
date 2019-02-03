@@ -1,0 +1,10 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/ViewModel/{{ argument.moduleName }}{{ argument.screenName }}EventsSource.swift
+import RxSwift
+
+struct {{ argument.moduleName }}{{ argument.screenName }}EventsSource: {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol {
+
+    func eventsFrom(view: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol) -> Observable<{{ argument.moduleName }}{{ argument.screenName }}.Event> {
+        return .empty() // TODO: implement 🔥🔥🔥
+    }
+}
+// sourcery:end

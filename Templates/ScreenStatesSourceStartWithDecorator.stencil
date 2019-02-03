@@ -1,0 +1,31 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/ViewModel/{{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecorator.swift
+import RxSwift
+
+struct {{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecorator {
+
+    private let baseSource: {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol
+    // TODO: ... 🔥🔥🔥
+
+    init(
+        decorating baseSource: {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol
+        // TODO: ... 🔥🔥🔥
+        ) {
+        
+        self.baseSource = baseSource
+        // TODO: ... 🔥🔥🔥
+    }
+}
+
+extension {{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecorator: {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol {
+
+    private var initialStaticInfo: {{ argument.moduleName }}{{ argument.screenName }}.StaticInfo {
+        return .init()
+    }
+
+    func statesFrom(view: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol) -> Observable<{{ argument.moduleName }}{{ argument.screenName }}.State> {
+        return baseSource
+            .statesFrom(view: view)
+            .startWith(.staticInfo(initialStaticInfo)) // TODO: fix!!! 🔥🔥🔥
+    }
+}
+// sourcery:end

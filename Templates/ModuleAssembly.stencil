@@ -1,0 +1,20 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.moduleName }}Module.swift
+import Swinject
+import SwinjectAutoregistration
+
+enum {{ argument.moduleName }}Module {
+
+    static let assembly = composedAssembly(from:
+        coordinatorAssembly,
+        {{ argument.moduleName }}{{ argument.screenName }}Assembly()
+        // TODO: ... 🔥🔥🔥
+    )
+
+    private static let coordinatorAssembly = assemblyFrom { container in
+        container.register(
+            {{ argument.moduleName }}CoordinatorProtocol.self,
+            factory: {{ argument.moduleName }}Coordinator.init(resolver:navigationController:)
+        )
+    }
+}
+// sourcery:end

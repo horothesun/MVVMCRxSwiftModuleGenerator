@@ -1,0 +1,73 @@
+// sourcery:file:{{ argument.unitTestDir }}/{{ argument.screenName }}/{{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecoratorSpec.swift
+import Nimble
+import Quick
+import RxSwift
+import RxTest
+import Cuckoo
+import TestUtils
+@testable import {{ argument.targetName }}
+
+final class {{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecoratorSpec: QuickSpec {
+
+    // swiftlint:disable:next function_body_length
+    override func spec() {
+        super.spec()
+
+        describe("{{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecorator") {
+            var statesSource: {{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecorator!
+            var baseSourceMock: Mock{{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol!
+            // TODO: ... 🔥🔥🔥
+            var scheduler: TestScheduler!
+            var disposeBag: DisposeBag!
+            beforeEach {
+                scheduler = TestScheduler(initialClock: 0)
+                disposeBag = DisposeBag()
+
+                baseSourceMock = Mock{{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol()
+                // TODO: ... 🔥🔥🔥
+                statesSource = {{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecorator(
+                    decorating: baseSourceMock
+                    // TODO: ... 🔥🔥🔥
+                )
+            }
+
+            describe("states stream") {
+                var viewMock: Mock{{ argument.moduleName }}{{ argument.screenName }}ViewProtocol!
+                var observer: TestableObserver<{{ argument.moduleName }}{{ argument.screenName }}.State>!
+                beforeEach {
+                    viewMock = Mock{{ argument.moduleName }}{{ argument.screenName }}ViewProtocol()
+                    observer = scheduler.createObserver({{ argument.moduleName }}{{ argument.screenName }}.State.self)
+                }
+
+                context("base source fails") {
+                    beforeEach {
+                        stub(baseSourceMock) { stub in
+                            when(stub.statesFrom(view: any())).thenReturn(.error(FakeError.fake))
+                        }
+
+                        statesSource.statesFrom(view: viewMock)
+                            .subscribe(observer)
+                            .disposed(by: disposeBag)
+                    }
+                    it("must be implemented!!!") { fail() }
+                }
+
+                context("base source emits no events") {
+                    beforeEach {
+                        stub(baseSourceMock) { stub in
+                            when(stub.statesFrom(view: any())).thenReturn(.empty())
+                        }
+
+                        statesSource.statesFrom(view: viewMock)
+                            .subscribe(observer)
+                            .disposed(by: disposeBag)
+                    }
+                    it("must be implemented!!!") { fail() }
+                }
+
+                // TODO: test other baseSource states... 🔥🔥🔥
+            }
+        }
+    }
+}
+// sourcery:end

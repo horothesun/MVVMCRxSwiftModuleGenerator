@@ -1,0 +1,63 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/{{ argument.moduleName }}{{ argument.screenName }}Assembly.swift
+import Swinject
+import SwinjectAutoregistration
+import RxSwift
+
+struct {{ argument.moduleName }}{{ argument.screenName }}Assembly: Assembly {
+
+    func assemble(container: Container) {
+
+        // TODO: events source throttling decorator... 🔥🔥🔥
+//        container.autoregister(
+//            {{ argument.moduleName }}{{ argument.screenName }}EventsSource.self,
+//            initializer: {{ argument.moduleName }}{{ argument.screenName }}EventsSource.init
+//        )
+//        container.register(
+//            {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol.self
+//        ) { resolver in
+//            {{ argument.moduleName }}{{ argument.screenName }}EventsSourceThrottlingDecorator(
+//                decorating: resolver.resolve({{ argument.moduleName }}{{ argument.screenName }}EventsSource.self)!,
+//                dueTime: 0.2,
+//                throttleScheduler: resolver~>
+//            )
+//        }
+        container.autoregister(
+            {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol.self,
+            initializer: {{ argument.moduleName }}{{ argument.screenName }}EventsSource.init
+        )
+
+        // TODO: states source startWith decorator... 🔥🔥🔥
+//        container.autoregister(
+//            {{ argument.moduleName }}{{ argument.screenName }}StatesSource.self,
+//            initializer: {{ argument.moduleName }}{{ argument.screenName }}StatesSource.init
+//        )
+//        container.register(
+//            {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol.self
+//        ) { resolver in
+//            {{ argument.moduleName }}{{ argument.screenName }}StatesSourceStartWithDecorator(
+//                decorating: resolver.resolve({{ argument.moduleName }}{{ argument.screenName }}StatesSource.self)!
+//            )
+//        }
+        container.autoregister(
+            {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol.self,
+            initializer: {{ argument.moduleName }}{{ argument.screenName }}StatesSource.init(eventsSource)
+        )
+
+        container.autoregister(
+            {{ argument.moduleName }}{{ argument.screenName }}ViewModelProtocol.self,
+            initializer: {{ argument.moduleName }}{{ argument.screenName }}ViewModel
+                .init(statesSource:coordinator:processingScheduler:)
+        )
+
+        container.autoregister(
+            {{ argument.moduleName }}{{ argument.screenName }}ViewController.self,
+            initializer: {{ argument.moduleName }}{{ argument.screenName }}ViewController.init(viewModel:)
+        )
+
+        container.autoregister(
+            {{ argument.moduleName }}{{ argument.screenName }}CoordinatorProtocol.self,
+            initializer: {{ argument.moduleName }}{{ argument.screenName }}CoordinatorProxy.init
+        ).inObjectScope(.container)
+    }
+}
+// sourcery:end

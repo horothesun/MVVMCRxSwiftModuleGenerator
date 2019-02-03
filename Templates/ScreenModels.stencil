@@ -1,0 +1,23 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/{{ argument.moduleName }}{{ argument.screenName }}Models.swift
+enum {{ argument.moduleName }}{{ argument.screenName }} {
+
+    enum Event: Equatable {
+        case refresh
+        // TODO: ... 🔥🔥🔥
+    }
+
+    enum State: Equatable {
+        case staticInfo(StaticInfo)
+        // TODO: ... 🔥🔥🔥
+    }
+
+    struct StaticInfo: Equatable {
+        // TODO: ... 🔥🔥🔥
+    }
+}
+
+extension {{ argument.moduleName }}{{ argument.screenName }}.StaticInfo {
+
+    static let error = {{ argument.moduleName }}{{ argument.screenName }}.StaticInfo()
+}
+// sourcery:end

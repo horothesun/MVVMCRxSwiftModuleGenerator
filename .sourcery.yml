@@ -1,0 +1,10 @@
+sources:
+    - Sources
+templates:
+    - Templates
+output: Generated
+args:
+    targetName: Target
+    moduleName: Module
+    screenName: Screen
+    unitTestDir: Tests

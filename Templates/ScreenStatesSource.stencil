@@ -1,0 +1,41 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/ViewModel/{{ argument.moduleName }}{{ argument.screenName }}StatesSource.swift
+import RxSwift
+
+struct {{ argument.moduleName }}{{ argument.screenName }}StatesSource {
+
+    private typealias Source = {{ argument.moduleName }}{{ argument.screenName }}StatesSource
+
+    private let eventsSource: {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol
+    // TODO: ... 🔥🔥🔥
+
+    init(
+        eventsSource: {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol
+        // TODO: ... 🔥🔥🔥
+        ) {
+
+        self.eventsSource = eventsSource
+        // TODO: ... 🔥🔥🔥
+    }
+}
+
+extension {{ argument.moduleName }}{{ argument.screenName }}StatesSource: {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol {
+
+    func statesFrom(view: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol) -> Observable<{{ argument.moduleName }}{{ argument.screenName }}.State> {
+        return eventsSource
+            .eventsFrom(view: view)
+            .flatMap(Source.statesFrom(event:))
+    }
+
+    private static func statesFrom(event: {{ argument.moduleName }}{{ argument.screenName }}.Event) -> Observable<{{ argument.moduleName }}{{ argument.screenName }}.State> {
+        switch event {
+        case .refresh:
+            return .just(.staticInfo(initialStaticInfo))
+        // TODO: case ...: return ... 🔥🔥🔥
+        }
+    }
+
+    private var initialStaticInfo: {{ argument.moduleName }}{{ argument.screenName }}.StaticInfo {
+        return .init()
+    }
+}
+// sourcery:end

@@ -1,0 +1,5 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.moduleName }}Protocols.swift
+protocol {{ argument.moduleName }}CoordinatorProtocol {
+    func start(completionHandler: @escaping () -> Void)
+}
+// sourcery:end

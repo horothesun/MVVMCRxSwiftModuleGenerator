@@ -1,0 +1,95 @@
+// sourcery:file:{{ argument.unitTestDir }}/{{ argument.screenName }}/{{ argument.moduleName }}{{ argument.screenName }}ViewModelSpec.swift
+import Nimble
+import Quick
+import RxSwift
+import RxTest
+import Cuckoo
+import TestUtils
+@testable import {{ argument.targetName }}
+
+final class {{ argument.moduleName }}{{ argument.screenName }}ViewModelSpec: QuickSpec {
+
+    // swiftlint:disable:next function_body_length
+    override func spec() {
+        super.spec()
+
+        describe("{{ argument.moduleName }}{{ argument.screenName }}ViewModel") {
+            var viewModel: {{ argument.moduleName }}{{ argument.screenName }}ViewModel!
+            var statesSourceMock: Mock{{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol!
+            var coordinatorMock: Mock{{ argument.moduleName }}{{ argument.screenName }}CoordinatorProtocol!
+            var scheduler: TestScheduler!
+            var disposeBag: DisposeBag!
+            beforeEach {
+                scheduler = TestScheduler(initialClock: 0)
+                disposeBag = DisposeBag()
+
+                statesSourceMock = Mock{{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol()
+                coordinatorMock = Mock{{ argument.moduleName }}{{ argument.screenName }}CoordinatorProtocol()
+                stub(coordinatorMock) { stub in
+                    when(stub.proceedFrom{{ argument.screenName }}()).thenDoNothing()
+                    // TODO: ... 🔥🔥🔥
+                }
+                viewModel = {{ argument.moduleName }}{{ argument.screenName }}ViewModel(
+                    statesSource: statesSourceMock,
+                    coordinator: coordinatorMock,
+                    processingScheduler: scheduler
+                )
+            }
+
+            describe("coordinator calls and output streams") {
+                var viewMock: Mock{{ argument.moduleName }}{{ argument.screenName }}ViewProtocol!
+                var staticInfoObserver: TestableObserver<{{ argument.moduleName }}{{ argument.screenName }}.StaticInfo>!
+                // TODO: ... 🔥🔥🔥
+                beforeEach {
+                    viewMock = Mock{{ argument.moduleName }}{{ argument.screenName }}ViewProtocol()
+                    staticInfoObserver = scheduler.createObserver({{ argument.moduleName }}{{ argument.screenName }}.StaticInfo.self)
+                    // TODO: ... 🔥🔥🔥
+
+                    // TODO: ... 🔥🔥🔥
+                    viewModel.staticInfo
+                        .asObservable()
+                        .subscribe(staticInfoObserver)
+                        .disposed(by: disposeBag)
+                }
+
+                context("states fails") {
+                    beforeEach {
+                        stub(statesSourceMock) { stub in
+                            when(stub.statesFrom(view: any())).thenReturn(.error(FakeError.fake))
+                        }
+
+                        viewModel.onAllDriversBoundTo(view: viewMock)
+                        scheduler.start()
+                    }
+                    it("static info stream must emit .next(<errorStaticInfo>) and .completed events") {
+                        expect(staticInfoObserver.events.map { $0.value })
+                            .to(equal([.next({{ argument.moduleName }}{{ argument.screenName }}.StaticInfo.error), .completed]))
+                    }
+                    // TODO: ... 🔥🔥🔥
+                }
+
+                context("states emits .staticInfo(sampleStaticInfo)") {
+                    beforeEach {
+                        stub(statesSourceMock) { stub in
+                            when(stub.statesFrom(view: any()))
+                                .thenReturn(.just(.staticInfo(sampleStaticInfo)))
+                        }
+
+                        viewModel.onAllDriversBoundTo(view: viewMock)
+                        scheduler.start()
+                    }
+                    it("static info stream must emit .next(sampleStaticInfo) and .completed events") {
+                        expect(staticInfoObserver.events.map { $0.value })
+                            .to(equal([.next(sampleStaticInfo), .completed]))
+                    }
+                    // TODO: ... 🔥🔥🔥
+                }
+
+                // TODO: test other emitted states... 🔥🔥🔥
+            }
+        }
+    }
+}
+
+private let sampleStaticInfo = {{ argument.moduleName }}{{ argument.screenName }}.StaticInfo()
+// sourcery:end

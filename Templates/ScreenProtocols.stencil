@@ -1,0 +1,29 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/{{ argument.moduleName }}{{ argument.screenName }}Protocols.swift
+import RxSwift
+import RxCocoa
+
+protocol {{ argument.moduleName }}{{ argument.screenName }}ViewModelProtocol {
+    var staticInfo: Driver<{{ argument.moduleName }}{{ argument.screenName }}.StaticInfo> { get }
+    // TODO: ... 🔥🔥🔥
+
+    func onAllDriversBoundTo(view: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol)
+}
+
+protocol {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol {
+    func eventsFrom(view: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol) -> Observable<{{ argument.moduleName }}{{ argument.screenName }}.Event>
+}
+
+protocol {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol {
+    func statesFrom(view: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol) -> Observable<{{ argument.moduleName }}{{ argument.screenName }}.State>
+}
+
+protocol {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol: class {
+    var viewWillAppear: Observable<Bool> { get }
+    // TODO: ... 🔥🔥🔥
+}
+
+protocol {{ argument.moduleName }}{{ argument.screenName }}CoordinatorProtocol: class {
+    func proceedFrom{{ argument.screenName }}()
+    // TODO: ... 🔥🔥🔥
+}
+// sourcery:end

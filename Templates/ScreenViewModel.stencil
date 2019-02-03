@@ -1,0 +1,68 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/ViewModel/{{ argument.moduleName }}{{ argument.screenName }}ViewModel.swift
+import RxSwift
+import RxCocoa
+
+final class {{ argument.moduleName }}{{ argument.screenName }}ViewModel {
+
+    private typealias ViewModel = {{ argument.moduleName }}{{ argument.screenName }}ViewModel
+
+    private let disposeBag = DisposeBag()
+    private let statesSubject = PublishSubject<{{ argument.moduleName }}{{ argument.screenName }}.State>()
+
+    private let statesSource: {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol
+    private weak var coordinator: {{ argument.moduleName }}{{ argument.screenName }}CoordinatorProtocol?
+    private let processingScheduler: SchedulerType
+
+    init(
+        statesSource: {{ argument.moduleName }}{{ argument.screenName }}StatesSourceProtocol,
+        coordinator: {{ argument.moduleName }}{{ argument.screenName }}CoordinatorProtocol,
+        processingScheduler: SchedulerType) {
+
+        self.statesSource = statesSource
+        self.coordinator = coordinator
+        self.processingScheduler = processingScheduler
+    }
+}
+
+extension {{ argument.moduleName }}{{ argument.screenName }}ViewModel: {{ argument.moduleName }}{{ argument.screenName }}ViewModelProtocol {
+
+    private var errorStaticInfo: {{ argument.moduleName }}{{ argument.screenName }}.StaticInfo {
+        return {{ argument.moduleName }}{{ argument.screenName }}.StaticInfo.error
+    }
+
+    var staticInfo: Driver<{{ argument.moduleName }}{{ argument.screenName }}.StaticInfo> {
+        return statesSubject
+            .flatMap { state -> Observable<{{ argument.moduleName }}{{ argument.screenName }}.StaticInfo> in
+                switch state {
+                case let .staticInfo(staticInfo):
+                    return .just(staticInfo)
+                // TODO: case ...: return .empty() 🔥🔥🔥
+                }
+            }
+            .asDriver(onErrorJustReturn: errorStaticInfo)
+    }
+
+    // TODO: ... 🔥🔥🔥
+
+    func onAllDriversBoundTo(view: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol) {
+        statesSubject
+            .asDriver(onErrorJustReturn: .staticInfo(errorStaticInfo))
+            .driveNext(weak: self, ViewModel.performActionFor(state:))
+            .disposed(by: disposeBag)
+
+        statesSource
+            .statesFrom(view: view)
+            .subscribeOn(processingScheduler)
+            .bind(to: statesSubject)
+            .disposed(by: disposeBag)
+    }
+
+    private func performActionFor(state: {{ argument.moduleName }}{{ argument.screenName }}.State) {
+        switch state {
+        // TODO: case ...: coordinator?.proceedFromThisScreen() 🔥🔥🔥
+        case .staticInfo:
+            break
+        }
+    }
+}
+// sourcery:end

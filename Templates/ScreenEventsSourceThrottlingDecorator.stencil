@@ -1,0 +1,49 @@
+// sourcery:file:{{ argument.moduleName }}/{{ argument.screenName }}/ViewModel/{{ argument.moduleName }}{{ argument.screenName }}EventsSourceThrottlingDecorator.swift
+import RxSwift
+
+private final class {{ argument.moduleName }}{{ argument.screenName }}ThrottledView: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol {
+
+    private let errorMessage = "baseView not initialized"
+
+    weak var baseView: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol?
+
+    private let dueTime: RxTimeInterval
+    private let throttleScheduler: SchedulerType
+
+    init(dueTime: RxTimeInterval, throttleScheduler: SchedulerType) {
+        self.dueTime = dueTime
+        self.throttleScheduler = throttleScheduler
+    }
+
+    var viewWillAppear: Observable<Bool> {
+        guard let baseView = baseView else { fatalError(errorMessage) }
+        return baseView.viewWillAppear
+    }
+//    var buttonTapped: Observable<Void> {
+//        guard let baseView = baseView else { fatalError(errorMessage) }
+//        return baseView.buttonTapped
+//            .throttle(dueTime, latest: false, scheduler: throttleScheduler)
+//    }
+    // TODO: ... 🔥🔥🔥
+}
+
+struct {{ argument.moduleName }}{{ argument.screenName }}EventsSourceThrottlingDecorator: {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol {
+
+    private let baseSource: {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol
+    private let throttlingView: {{ argument.moduleName }}{{ argument.screenName }}ThrottledView
+
+    init(
+        decorating baseSource: {{ argument.moduleName }}{{ argument.screenName }}EventsSourceProtocol,
+        dueTime: RxTimeInterval,
+        throttleScheduler: SchedulerType) {
+
+        self.baseSource = baseSource
+        throttlingView = .init(dueTime: dueTime, throttleScheduler: throttleScheduler)
+    }
+
+    func eventsFrom(view: {{ argument.moduleName }}{{ argument.screenName }}ViewProtocol) -> Observable<{{ argument.moduleName }}{{ argument.screenName }}.Event> {
+        throttlingView.baseView = view
+        return baseSource.eventsFrom(view: throttlingView)
+    }
+}
+// sourcery:end
